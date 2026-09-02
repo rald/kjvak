@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
-
+#include "common.h"
 
 char *trim(char *a);
 void tokenize(char ***tokens,size_t *ntokens,char *s,char *d);

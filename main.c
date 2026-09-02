@@ -107,7 +107,7 @@ void parsein(IrcMsg *im) {
 	} else if(sscanf(msg,TRIGGER "skjv %[^\n]\n",text)==1) {
 		search(sck,chn,1,text);
 	} else if(strcasecmp(msg,TRIGGER "pkjv")==0) {
-    pick(sck,chn);
+	    pick(sck,chn);
 	}
 
 	free(msg);
@@ -146,10 +146,10 @@ int main(void) {
 	srand(time(NULL));
 
 
-	Info_Load(&infos,&ninfos,"kjvak.inf");
+	Info_Load(&infos,&ninfos,BIBLE_INF_FILE);
 
 
-    ini_t *config = ini_load("config.ini");
+    ini_t *config = ini_load(CONFIG_INI_FILE);
 
     const char *val; 
 
@@ -206,7 +206,7 @@ int main(void) {
 			printf("par: %s\n",im.par);
 			printf("txt: %s\n",im.txt);
 	//*/
-			
+
 			if(!strcmp(im.cmd,"PING")) {
 				line[1]='O';
 				raw(sck,"PONG :%s\r\n",im.txt);
@@ -214,7 +214,7 @@ int main(void) {
 				raw(sck,"JOIN %s\r\n",chn);
 			} else if(!strcmp(im.cmd,"PRIVMSG")) {
 				printf("%s <%s> %s\n",im.par,im.usr,im.txt);
-				parsein(&im);				
+				parsein(&im);
 			}
 
 		}

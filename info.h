@@ -1,7 +1,7 @@
 #ifndef INFO_H
 #define INFO_H
 
-
+#include "common.h"
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"

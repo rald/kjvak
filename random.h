@@ -5,6 +5,8 @@
 
 #include <stdlib.h>
 
+#include "common.h"
+
 
 double drand();
 

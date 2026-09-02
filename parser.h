@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "common.h"
+
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
 

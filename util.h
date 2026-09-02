@@ -7,6 +7,8 @@
 #include <math.h>
 #include <sys/types.h>
 
+#include "common.h"
+
 #define IRC_IMPLEMENTATION
 #include "irc.h"
 
@@ -70,7 +72,7 @@ void search(int conn,const char *chn,size_t page,char *text) {
 
  	if(text && *text) {
 
-		FILE *fp=fopen("kjv.csv","r");
+		FILE *fp=fopen(BIBLE_CSV_FILE,"r");
 
 		char *line=NULL;
 		size_t llen=0;
@@ -94,7 +96,7 @@ void search(int conn,const char *chn,size_t page,char *text) {
 			size_t vnum=atoi(tokens[2]);
 			char *vers=tokens[3];
 
-			char passage[1024];
+			char passage[STRING_MAX];
 
 			sprintf(passage,"%s %zu:%zu %s",bname,cnum,vnum,vers);
 
@@ -132,7 +134,7 @@ void search(int conn,const char *chn,size_t page,char *text) {
 
 void pick(int conn,const char *chn) {
 
-	FILE *fp=fopen("kjv.csv","r");
+	FILE *fp=fopen(BIBLE_CSV_FILE,"r");
 
 	char *line=NULL;
 	size_t llen=0;
@@ -140,7 +142,7 @@ void pick(int conn,const char *chn) {
 
 	char passage[2046];
 
-  size_t n=0;
+ 	size_t n=0;
 
 	while((rlen=getline(&line,&llen,fp))!=-1) {
 
