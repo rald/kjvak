@@ -178,57 +178,62 @@ int main(void) {
   mst=val?val:mst;
 
 
+	for(;;) {
 
-	sck=Irc_Connect(hst,prt);
+		sck=Irc_Connect(hst,prt);
 
-  if (sck<0) {
-  	DieWithUserMessage("Irc_Connect() failed", "unable to connect");
-  }
+		if (sck<0) {
+			DieWithUserMessage("Irc_Connect() failed", "unable to connect");
+		}
 
-	if(pss) raw(sck,"PASS %s\r\n",pss);
-	raw(sck,"NICK %s\r\n",nck);
-	raw(sck,"USER %s %s %s :%s\r\n",nck,nck,nck,nck);
+		if(pss) raw(sck,"PASS %s\r\n",pss);
+		raw(sck,"NICK %s\r\n",nck);
+		raw(sck,"USER %s %s %s :%s\r\n",nck,nck,nck,nck);
 
-	while((rlen=Irc_Recv(sck,line,llen))!=-1) { 
+		while((rlen=Irc_Recv(sck,line,llen))!=-1) {
 
-		if(rlen>0) {
+			if(rlen>0) {
 
-			im.cmd=NULL;
-			im.usr=NULL;
-			im.par=NULL;
-			im.txt=NULL;
+				im.cmd=NULL;
+				im.usr=NULL;
+				im.par=NULL;
+				im.txt=NULL;
 
-			parsesrv(&im,line);		
+				parsesrv(&im,line);
 
-	/*
-			printf("cmd: %s\n",im.cmd);
-			printf("usr: %s\n",im.usr);
-			printf("par: %s\n",im.par);
-			printf("txt: %s\n",im.txt);
-	//*/
+		/*
+				printf("cmd: %s\n",im.cmd);
+				printf("usr: %s\n",im.usr);
+				printf("par: %s\n",im.par);
+				printf("txt: %s\n",im.txt);
+		//*/
 
-			if(!strcmp(im.cmd,"PING")) {
-				line[1]='O';
-				raw(sck,"PONG :%s\r\n",im.txt);
-			} else if(!strcmp(im.cmd,"001")) {
-				raw(sck,"JOIN %s\r\n",chn);
-			} else if(!strcmp(im.cmd,"PRIVMSG")) {
-				printf("%s <%s> %s\n",im.par,im.usr,im.txt);
-				parsein(&im);
+				if(!strcmp(im.cmd,"PING")) {
+					line[1]='O';
+					raw(sck,"PONG :%s\r\n",im.txt);
+				} else if(!strcmp(im.cmd,"001")) {
+					raw(sck,"JOIN %s\r\n",chn);
+				} else if(!strcmp(im.cmd,"PRIVMSG")) {
+					printf("%s <%s> %s\n",im.par,im.usr,im.txt);
+					parsein(&im);
+				}
+
 			}
+
+			line[0]='\0';
+			llen=STRING_MAX;
+			rlen=0;
 
 		}
 
-		line[0]='\0';
-		llen=STRING_MAX;
-		rlen=0;
+		close(sck);
 
-  }
+	}
 
 	Infos_Free(&infos,&ninfos);
 
 	return 0;
-	
+
 }
 
 
